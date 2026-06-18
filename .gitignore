@@ -1,0 +1,10 @@
+# Окружение и секреты
+.env
+venv/
+
+# Python-кэш
+__pycache__/
+*.pyc
+
+# Системные файлы macOS
+.DS_Store
