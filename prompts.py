@@ -35,3 +35,20 @@ Return ONLY a valid JSON object in exactly this format, with no extra text:
 "text": "your ad text here",
 "cta": "your call to action here"
 }}"""
+
+
+def build_tiktok_prompt(business: str, product: str) -> str:
+    return f"""You are an expert social media copywriter specializing in TikTok marketing.
+
+Create a TikTok ad for the following business:
+Business: {business}
+Product/Service: {product}
+
+Requirements:
+- Write ONE single short hook sentence that instantly grabs attention and makes viewers want to keep watching
+- The tone should be bold, punchy and conversational, with no formality
+
+Return ONLY a valid JSON object in exactly this format, with no extra text:
+{{
+  "hook": "your ad hook here"
+}}"""
