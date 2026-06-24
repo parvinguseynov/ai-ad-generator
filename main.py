@@ -1,5 +1,6 @@
-from fastapi import FastAPI
-from schemas import AdRequest
+from fastapi import FastAPI, HTTPException
+from schemas import AdRequest, AdResponse
+from generator import generate_all
 
 app = FastAPI()
 
@@ -15,3 +16,14 @@ def generate_ad(request: AdRequest):
         "received_business": request.business,
         "received_product": request.product,
     }
+
+
+@app.post("/generate", response_model=AdResponse)
+def generate_ad(request: AdRequest):
+    result = generate_all(request.business, request.product)
+    if result is None:
+        raise HTTPException(
+            status_code=502,
+            detail="Failed to generate valid ad content. Please try again.",
+        )
+    return result
