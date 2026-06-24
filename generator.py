@@ -36,3 +36,19 @@ def parse_and_validate(raw: str, schema: type[BaseModel]) -> BaseModel | None:
         return schema(**data)
     except (json.JSONDecodeError, ValidationError):
         return None
+
+
+def generate_for_platform(
+    business: str,
+    product: str,
+    prompt_builder,
+    schema: type[BaseModel],
+    retries: int = 1,
+) -> BaseModel | None:
+    prompt = prompt_builder(business, product)
+    for attempt in range(retries + 1):
+        raw = generate_content(prompt)
+        result = parse_and_validate(raw, schema)
+        if result is not None:
+            return result
+    return None
