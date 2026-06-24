@@ -1,0 +1,3 @@
+fastapi[standard]==0.138.0
+anthropic==0.111.0
+python-dotenv==1.2.2
