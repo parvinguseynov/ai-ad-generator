@@ -1,8 +1,23 @@
+from prompts import (
+    build_instagram_prompt,
+    build_facebook_prompt,
+    build_tiktok_prompt,
+)
+from schemas import (
+    AdResponse,
+    InstagramContent,
+    FacebookContent,
+    TikTokContent,
+)
 import os
 import anthropic
 from dotenv import load_dotenv
 import json
 from pydantic import BaseModel, ValidationError
+from schemas import (AdResponse, InstagramContent,
+                     FacebookContent, TikTokContent,)
+from prompts import (build_instagram_prompt,
+                     build_facebook_prompt, build_tiktok_prompt,)
 
 load_dotenv()
 
@@ -52,3 +67,24 @@ def generate_for_platform(
         if result is not None:
             return result
     return None
+
+
+def generate_all(business: str, product: str) -> AdResponse | None:
+    instagram = generate_for_platform(
+        business, product, build_instagram_prompt, InstagramContent
+    )
+    facebook = generate_for_platform(
+        business, product, build_facebook_prompt, FacebookContent
+    )
+    tiktok = generate_for_platform(
+        business, product, build_tiktok_prompt, TikTokContent
+    )
+
+    if instagram is None or facebook is None or tiktok is None:
+        return None
+
+    return AdResponse(
+        instagram=instagram,
+        facebook=facebook,
+        tiktok=tiktok,
+    )
